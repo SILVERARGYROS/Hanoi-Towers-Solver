@@ -9,9 +9,9 @@ typedef struct STACK{
 stack* towerInit(int max, stack** tower);
 void push(stack* head, int value);
 int pop(stack* head);
-int top(stack* tower);
-void moveLayer(stack* tower1, stack* tower2);
-void Hanoi(int n, stack* tower);
+int top(stack* head); //unused
+void moveLayer(stack** tower1, stack** tower2);
+void Hanoi(int n, stack** from, stack** to, stack** spare);
 
 int main (void)
 {
@@ -28,8 +28,10 @@ int main (void)
 
 
     //initialize towers (stacks)
-    stack** tower = (stack**) malloc(sizeof(stack*) * 3);
-    tower = towerInit(int max, tower);
+    stack* tower1;
+    stack* tower2;
+    stack* tower3;
+    tower1 = towerInit(height, &tower1);
     
 
 
@@ -41,7 +43,7 @@ int main (void)
 
 
     //solve towers
-    Hanoi(height, tower[0], tower[1], tower[2]);
+    Hanoi(height, &tower1, &tower2, &tower3);
 
     printf("all good so far\n");
     return 0;
@@ -51,7 +53,7 @@ stack* towerInit(int max, stack** tower)
 {
     int i;
     
-    tower* temp = tower[0];
+    stack* temp = *tower;
     temp = (stack*) malloc(sizeof(stack));
     temp->number = 1;
     for(i = 2; i <= max; i++)
@@ -61,7 +63,7 @@ stack* towerInit(int max, stack** tower)
         temp->number = i;
     }
     
-    return tower;
+    return *tower;
 }
 
 void push(stack* head, int value)
@@ -79,28 +81,30 @@ int pop(stack* head)
     head = head->next;
 
     value = temp->number;
-    free(tmp);
+    free(temp);
     return value;
 }
 
-int top(stack* tower)
+int top(stack* head)
 {
-    return head->value;
+    return head->number;
 }
 
-void moveLayer(stack* tower1, stack* tower2)
+void moveLayer(stack** tower1, stack** tower2)
 {
     push(tower1, pop(tower2));
 }
 
-void Hanoi(int n, stack* from, stack* to, stack* spare)
+void Hanoi(int n, stack** from, stack** to, stack** spare)
 {
-    if(n == 0)
+    if (n == 0) 
     {
-        return;
-    }
-    else
-    {
-        Hanoi()
-    }
+        return; 
+    } 
+    Hanoi(n-1, from, spare, to); 
+    // cout << "Move disk " << n << " from rod " << from_rod <<
+    //                             " to rod " << to_rod << endl; 
+    // printf("moving disk %d from ")
+    moveLayer(from, to);
+    Hanoi(n-1, spare, to, from); 
 }

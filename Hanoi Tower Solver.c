@@ -1,20 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct{
-    int* array;
-    int top;
+typedef struct STACK{
+    int number;
+    struct STACK* next;
 }stack;
 
-stack* towerInit(int max);
-void push(stack* tower, int value);
-int pop(stack* tower);
-void move(stack* tower1, stack* tower2);
+stack* towerInit(int max, stack** tower);
+void push(stack* head, int value);
+int pop(stack* head);
 int top(stack* tower);
-int Hanoi(int n, stack* t1, stack* t2, stack* t3);
+void moveLayer(stack* tower1, stack* tower2);
+void Hanoi(int n, stack* tower);
 
 int main (void)
 {
+    int i;
+
     //clears terminal
     system("clear"); 
 
@@ -24,52 +26,81 @@ int main (void)
     printf("Please enter tower's height: ");
     scanf("%d", &height);
 
+
     //initialize towers (stacks)
-    stack* t1 = towerInit(height);
-    stack* t2 = towerInit(height);
-    stack* t3 = towerInit(height);
+    stack** tower = (stack**) malloc(sizeof(stack*) * 3);
+    tower = towerInit(int max, tower);
+    
+
+
+    //debugging/testing
+    /* for(i = 0; i < t2->top; i++)
+    {
+        printf("debug t2 [%d] == %d\n", i, t2->array[i]);
+    } */
+
 
     //solve towers
-    // Hanoi(height, t1, t2, t3);
+    Hanoi(height, tower[0], tower[1], tower[2]);
 
     printf("all good so far\n");
     return 0;
 }
 
-stack* towerInit(int max)
+stack* towerInit(int max, stack** tower)
 {
-    stack* tower;
-    tower = (stack*) malloc(sizeof(stack));
-    tower->array = (int*) malloc (sizeof(int) * (max-1));
-    tower->top = 0;
+    int i;
+    
+    tower* temp = tower[0];
+    temp = (stack*) malloc(sizeof(stack));
+    temp->number = 1;
+    for(i = 2; i <= max; i++)
+    {
+        temp->next = (stack*) malloc(sizeof(stack));
+        temp = temp->next;
+        temp->number = i;
+    }
     
     return tower;
 }
 
-void push(stack* tower, int value)
+void push(stack* head, int value)
 {
-    tower->top++;
-    tower->array[tower->top] = value;
+    stack* temp = (stack*) malloc(sizeof(stack));
+    temp->number = value;
+    temp->next = head;
+    head = temp;
 }
 
-int pop(stack* tower)
+int pop(stack* head)
 {
-    int value = tower->array[tower->top];
-    tower->top--;
+    int value;
+    stack* temp = head;
+    head = head->next;
+
+    value = temp->number;
+    free(tmp);
     return value;
-}
-
-void move(stack* tower1, stack* tower2)
-{
-    push(tower1, pop(tower2));
 }
 
 int top(stack* tower)
 {
-    return tower->array[tower->top];
+    return head->value;
 }
 
-int Hanoi(int n, stack* t1, stack* t2, stack* t3)
+void moveLayer(stack* tower1, stack* tower2)
 {
-    
+    push(tower1, pop(tower2));
+}
+
+void Hanoi(int n, stack* from, stack* to, stack* spare)
+{
+    if(n == 0)
+    {
+        return;
+    }
+    else
+    {
+        Hanoi()
+    }
 }

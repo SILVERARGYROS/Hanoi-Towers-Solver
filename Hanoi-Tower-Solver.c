@@ -31,16 +31,9 @@ int main (void)
     stack* tower1;
     stack* tower2;
     stack* tower3;
+    // printf("debug: before towerInit\n");
     tower1 = towerInit(height, &tower1);
-    
-
-
-    //debugging/testing
-    /* for(i = 0; i < t2->top; i++)
-    {
-        printf("debug t2 [%d] == %d\n", i, t2->array[i]);
-    } */
-
+    // printf("debug: after towerInit\n");
 
     //solve towers
     Hanoi(height, &tower1, &tower2, &tower3);
@@ -62,7 +55,7 @@ stack* towerInit(int max, stack** tower)
         temp = temp->next;
         temp->number = i;
     }
-    
+    temp->next = NULL;
     return *tower;
 }
 
@@ -81,7 +74,7 @@ int pop(stack* head)
     head = head->next;
 
     value = temp->number;
-    free(temp);
+    // free(temp);
     return value;
 }
 
@@ -105,6 +98,9 @@ void Hanoi(int n, stack** from, stack** to, stack** spare)
     // cout << "Move disk " << n << " from rod " << from_rod <<
     //                             " to rod " << to_rod << endl; 
     // printf("moving disk %d from ")
+
+    printf("debug: before moveLayer\n");
     moveLayer(from, to);
+    printf("debug: after moveLayer\n");
     Hanoi(n-1, spare, to, from); 
 }
